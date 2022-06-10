@@ -8,11 +8,10 @@ const player = new Player('vimeo-player', {
 
 const STORAGE_KEY = 'videoplayer-current-time';
 
-player.on('timeupdate', throttle(onPlayer, 1000));
-
 function onPlayer(data) {
   localStorage.setItem(STORAGE_KEY, data.seconds);
 }
+player.on('timeupdate', throttle(onPlayer, 1000));
 
 const currentTime = localStorage.getItem(STORAGE_KEY);
 

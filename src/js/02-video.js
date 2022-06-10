@@ -5,18 +5,19 @@ const player = new Player('vimeo-player', {
   width: 640,
 });
 
+const STORAGE_KEY = 'videoplayer-current-time';
+
 player.on('timeupdate', function (data) {
-  console.log(data);
+  localStorage.setItem(STORAGE_KEY, data.seconds);
 });
 
-const onPlay = function (data) {
-  //   console.log(data);
-};
-
+const onPlay = function (data) {};
 player.on('play', onPlay);
 
+const currentTime = localStorage.getItem(STORAGE_KEY);
+
 player
-  .setCurrentTime(settings)
+  .setCurrentTime(currentTime)
   .then(function (seconds) {
     // seconds = the actual time that the player seeked to
   })
@@ -31,13 +32,3 @@ player
         break;
     }
   });
-
-// const settings = {
-//   data: 'videoplayer-current-time',
-// };
-
-// localStorage.setItem('settings', JSON.stringify(settings));
-
-// const savedSettings = localStorage.getItem('settings');
-// const parsedSettings = JSON.parse(savedSettings);
-// console.log(parsedSettings); // settings object

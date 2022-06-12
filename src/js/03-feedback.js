@@ -7,6 +7,18 @@ const refs = {
 
 const STORAGE_KEY = 'feedback-form-state';
 
+const formData = {};
+
+refs.form.addEventListener('input', throttle(onFormUser, 500));
+
+function onFormUser(e) {
+  formData[e.target.name] = e.target.value;
+
+  localStorage.setItem('formUser', JSON.stringify(formData));
+  const SaveUser = localStorage.getItem('formUser');
+  const parsedUser = JSON.parse(SaveUser);
+}
+
 refs.form.addEventListener('submit', onFormSubmit);
 
 function onFormSubmit(e) {
@@ -14,6 +26,8 @@ function onFormSubmit(e) {
 
   e.target.reset();
   localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem('formUser');
+  console.log(formData);
 }
 
 refs.textarea.addEventListener('input', throttle(onTextareaInput, 500));
@@ -23,6 +37,7 @@ function onTextareaInput(e) {
   localStorage.setItem(STORAGE_KEY, message);
 }
 
+populateTextarea();
 function populateTextarea() {
   const savedMessage = localStorage.getItem(STORAGE_KEY);
 
@@ -31,16 +46,3 @@ function populateTextarea() {
     refs.textarea.value = savedMessage;
   }
 }
-populateTextarea();
-
-const formData = {};
-
-refs.form.addEventListener('input', e => {
-  formData[e.target.name] = e.target.value;
-
-  // console.log(e.target.name);
-  localStorage.setItem('formUser', JSON.stringify(formData));
-  const SaveUser = localStorage.getItem('formUser');
-  const parsedUser = JSON.parse(SaveUser);
-  console.log(parsedUser);
-});
